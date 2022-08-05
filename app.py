@@ -9,7 +9,7 @@ from refresher import bd_refresh
 
 app=Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lab2.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lab.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 db = SQLAlchemy(app)
 
