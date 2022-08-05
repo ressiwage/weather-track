@@ -8,7 +8,7 @@ from grab_cur import get_current as grab_current
 from datetime import datetime
 import csv
 import threading, time
-
+from refresher import bd_refresh
 
 
 app=Flask(__name__)
@@ -140,11 +140,6 @@ def pg2():
 
 
 if __name__ == '__main__':
-    def bd_refresh():
-        data = grab_current()
-        add_to_db_now(data["temperature"], data["weather"], data["humidity"])
-        threading.Timer(60*60, bd_refresh).start()
+    bd_refresh()
 
-    threading.Timer(1, bd_refresh).start()
-    
     app.run(debug = True)
