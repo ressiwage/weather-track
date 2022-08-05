@@ -26,8 +26,8 @@ def bd_refresh():
     print(sql)
     result = cur.execute(sql)
     
-    print(result)
-
+    print(result.fetchall())
+    con.close()
 if __name__ == '__main__':
     while True:
         bd_refresh()
