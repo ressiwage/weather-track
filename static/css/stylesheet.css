@@ -1,0 +1,36 @@
+
+.row>*{
+    flex-grow: 1;
+    flex-shrink:1;
+}
+table{
+    min-width: 100%;
+}
+table tr:nth-child(1){
+    background-color:rgba(1, 1, 1, 0.025);   
+}
+tr:nth-child(2){
+    border-top:1px solid rgba(1, 1, 1, 0.1);
+}
+tr:nth-child(2) .row{
+    vertical-align: middle;
+    align-items: center;
+    text-align: center;
+
+}
+tr:nth-child(2) div>p{
+    min-width: 33%;
+    max-width: 33%;
+    word-wrap: break-word;
+}
+tr:nth-child(2) div>img{
+    max-width: 33%;
+}
+tr td:not(:first-of-type){
+    border-left: 1px solid rgba(1, 1, 1, 0.1);
+}
+table tr td{
+    text-align: center;
+    padding-left: 1em;
+    padding-right: 1em;
+}
