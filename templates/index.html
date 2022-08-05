@@ -7,13 +7,6 @@
   }
 </style>
 
-<form method="POST">
-  <div class="row flex-nowrap">
-      <input type="submit" name="submit" class="btn btn-primary  px-3 m-lg-2" value="захуячить бд">
-      <input type="submit" name="decline" class="btn btn-primary px-3 m-lg-2" value="отправить хуйню" >
-  </div>
-</form>
-
 <div class="px-4 text-center">
   <img class="d-block mx-auto mb-4" src={{ cur_item.weather.replace('64', '128') }} alt="">
   <h1 class="display-5 fw-bold">{{ cur_item.weather_text }}</h1>

@@ -7,6 +7,8 @@ import numpy as np
 from grab_cur import get_current as grab_current
 from datetime import datetime
 import csv
+import threading, time
+
 
 
 app=Flask(__name__)
@@ -123,17 +125,7 @@ def index():
                     writer.writerow(j)
             password = request.args.get('password')
             return app.send_static_file("exp.csv")
-
-    if request.method == 'POST':
-        data = request.form.keys()
-        for i in data:
-            print(i,"\n")
-            if i=="submit":
-                create_db()
-            else:
-                print(select_all())
-                data = grab_current()
-                add_to_db_now(data["temperature"], data["weather"], data["humidity"])
+                
                 
     return render_template("index.html", items = items, icons=icons, headers=headers, cur_item=cur_item)
 
@@ -148,9 +140,11 @@ def pg2():
 
 
 if __name__ == '__main__':
-    # add_sh()
+    def bd_refresh():
+        data = grab_current()
+        add_to_db_now(data["temperature"], data["weather"], data["humidity"])
+        threading.Timer(60*60, bd_refresh).start()
+
+    threading.Timer(1, bd_refresh).start()
+    
     app.run(debug = True)
-
-
-
-
