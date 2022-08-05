@@ -1,6 +1,6 @@
 from grab_cur import get_current as grab_current
 import sqlite3, threading, random, datetime
-import os
+import os, time
 from rq import Worker, Queue, Connection
 
 
@@ -24,8 +24,10 @@ def bd_refresh():
         '{datetime.datetime.now().replace(microsecond=0)}')
         """)
     result = cur.executescript(sql)
-    threading.Timer(60*60, bd_refresh ).start()
+    
     print(result)
 
 if __name__ == '__main__':
-    threading.Timer(1, bd_refresh).start()
+    while True:
+        bd_refresh()
+        time.sleep(60)
