@@ -8,7 +8,7 @@ from rq import Worker, Queue, Connection
 def bd_refresh():
     con = sqlite3.connect("lab2.db")
     cur = con.cursor()
-    print(1)
+    print("iteration")
     data = grab_current()
     sql = str(f"""
         INSERT INTO `days`(
@@ -23,7 +23,8 @@ def bd_refresh():
         {data["humidity"]},
         '{datetime.datetime.now().replace(microsecond=0)}')
         """)
-    result = cur.executescript(sql)
+    print(sql)
+    result = cur.execute(sql)
     
     print(result)
 
