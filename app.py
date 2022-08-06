@@ -76,6 +76,8 @@ grouped_items = {}
             
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    print(os.path.abspath(__file__))
+
     for i in select_all():
         # i: id, date, temperature, weather, humidity
         date = datetime.strptime(i[1][2:], '%y-%m-%d %H:%M:%S')
@@ -100,7 +102,7 @@ def index():
         if request.args.get('export',-1234)!=-1234:
             header = ['id','date', 'temperature', 'icon', 'humidity']
             data = select_all()
-            shutil.copy("lab.db","static/lab.db")
+            #shutil.copy("lab.db","static/lab.db")
             with open('static/exp.csv', 'w+', encoding='UTF8') as f:
                 writer = csv.writer(f)
                 # write the header
@@ -108,7 +110,7 @@ def index():
                 # write the data
                 for j in data:
                     writer.writerow(j)
-            return app.send_static_file("lab.db")
+            return app.send_static_file("exp2.csv")
                 
     return render_template("index.html", items = items, icons=icons, headers=headers, cur_item=cur_item)
 
