@@ -45,7 +45,7 @@ def clear_db(delete_what):
 
 def select_all():
     sql = str(f"""
-        SELECT * FROM days ORDER BY date
+        SELECT * FROM days ORDER BY date DESC
         """)
     return [i for i in db.engine.execute(sql)]
 
