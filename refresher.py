@@ -6,7 +6,8 @@ from rq import Worker, Queue, Connection
 
 
 def bd_refresh():
-    con = sqlite3.connect("lab.db")
+    con = sqlite3.connect("lab2.db")
+    print(os.path.abspath('lab2.db'))
     cur = con.cursor()
     print("iteration")
     data = grab_current()
@@ -28,6 +29,7 @@ def bd_refresh():
     
     print(os.path.abspath(__file__))
     con.close()
+    cur.close()
 if __name__ == '__main__':
     while True:
         bd_refresh()
