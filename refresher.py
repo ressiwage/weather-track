@@ -9,6 +9,7 @@ def bd_refresh():
     cur = con.cursor()
     print("iteration")
     data = grab_current()
+    sql = "SELECT * FROM `days`"
     sql = str(f"""
         INSERT INTO `days`(
         `id`,
@@ -20,9 +21,9 @@ def bd_refresh():
         {data["temperature"]},
         '{data["weather"]}',
         {data["humidity"]},
-        '{datetime.datetime.now().replace(microsecond=0)}')
+        '{datetime.datetime.now().replace(microsecond=0)}');
         """)
-    sql = "SELECT * FROM `days`"
+
     print(sql)
     result = cur.execute(sql)
     print(result.fetchall())
