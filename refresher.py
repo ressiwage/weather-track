@@ -16,9 +16,8 @@ def bd_refresh():
     print("iteration")
     data = grab_current()
     sql = "SELECT * FROM `days`"
-    sql = f"""INSERT INTO days (id, temperature, weather, humidity, date) VALUES (
-        {random.randint(1_000_000_000, 10_000_000_000)}, {data["temperature"]}, '{data["weather"]}', {data["humidity"]}, '{datetime.datetime.now().replace(microsecond=0)}');
-        """
+    sql = f'INSERT INTO days (id, temperature, weather, humidity, date) VALUES ({random.randint(1_000_000_000, 10_000_000_000)}, {data["temperature"]}, "{data["weather"]}", {data["humidity"]}, "{datetime.datetime.now().replace(microsecond=0)}");'
+
 
     print(sql)
     result = cur.execute(sql)
