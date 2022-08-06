@@ -110,7 +110,7 @@ def index():
                 # write the data
                 for j in data:
                     writer.writerow(j)
-            return app.send_static_file("exp2.csv")
+            return app.send_static_file("exp.csv")
                 
     return render_template("index.html", items = items, icons=icons, headers=headers, cur_item=cur_item)
 
