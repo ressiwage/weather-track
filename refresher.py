@@ -6,7 +6,7 @@ from rq import Worker, Queue, Connection
 
 
 def bd_refresh():
-    con = sqlite3.connect("lab.db")
+    con = sqlite3.connect("lab2.db")
     cur = con.cursor()
     print("iteration")
     data = grab_current()
