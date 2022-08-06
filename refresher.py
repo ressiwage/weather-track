@@ -26,7 +26,7 @@ def bd_refresh():
     print(sql)
     result = cur.execute(sql)
     
-    print(result.fetchall())
+    print(os.getcwd())
     con.close()
 if __name__ == '__main__':
     while True:
