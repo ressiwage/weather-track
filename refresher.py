@@ -25,7 +25,7 @@ def bd_refresh():
     sql = "SELECT * FROM `days`"
     print(sql)
     result = cur.execute(sql)
-    print(result)
+    print(result.fetchall())
     con.commit()
     cur.close()
     con.close()
