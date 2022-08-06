@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy #
-import sqlite3, csv,  threading, time
+import sqlite3, csv,  threading, time, shutil
 import random, os
 from grab_cur import get_current as grab_current
 from datetime import datetime
@@ -9,7 +9,7 @@ from refresher import bd_refresh
 
 app=Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lab.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lab2.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 db = SQLAlchemy(app)
 
@@ -100,6 +100,7 @@ def index():
         if request.args.get('export',-1234)!=-1234:
             header = ['id','date', 'temperature', 'icon', 'humidity']
             data = select_all()
+            shutil.copy("lab.db","static/lab.db")
             with open('static/exp.csv', 'w+', encoding='UTF8') as f:
                 writer = csv.writer(f)
                 # write the header
@@ -107,7 +108,7 @@ def index():
                 # write the data
                 for j in data:
                     writer.writerow(j)
-            return app.send_static_file("exp.csv")
+            return app.send_static_file("lab.db")
                 
     return render_template("index.html", items = items, icons=icons, headers=headers, cur_item=cur_item)
 
