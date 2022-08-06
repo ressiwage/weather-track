@@ -20,7 +20,7 @@ def bd_refresh():
 
 
     print(sql)
-    result = cur.execute(sql)
+    result = cur.executescript(sql)
     print(result.fetchall())
     con.commit()
     cur.close()
