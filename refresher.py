@@ -23,8 +23,8 @@ def bd_refresh():
         {data["humidity"]},
         '{datetime.datetime.now().replace(microsecond=0)}')
         """)
-    print(cur.rowcount)
-    result = cur.execute(sql)
+    cur.execute(sql)
+    con.commit()
     cur.close()
     con.close()
     
