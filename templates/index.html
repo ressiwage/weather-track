@@ -8,7 +8,7 @@
 </style>
 
 <div class="px-4 text-center">
-  <img class="d-block mx-auto mb-4" src={{ cur_item.weather.replace('64', '128') }} alt="">
+  <img class="d-block mx-auto mb-4" src={{ current_weather.weather.replace('64', '128') }} alt="">
   <h1 class="display-5 fw-bold">{{ cur_item.weather_text }}</h1>
   <div class="col-lg-6 mx-auto">
     <p class="lead mb-4">temperature: {{ cur_item.temperature }} Celsius, humidity: {{ cur_item.humidity }}</p>

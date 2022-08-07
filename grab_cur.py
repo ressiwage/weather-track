@@ -113,7 +113,7 @@ def get_current():
     jsonstring = json.loads(r)
     root = Root.from_dict(jsonstring)
     
-    print("\n\n\n", root)
+    #print("\n\n\n", root)
     return {
         "weather":root.current.condition.icon,
         "temperature":root.current.temp_c,

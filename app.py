@@ -1,10 +1,9 @@
 from flask import Flask, render_template, url_for, request, redirect
-from flask_sqlalchemy import SQLAlchemy  #
-import sqlite3, csv, threading, time, shutil
-import random, os
+from flask_sqlalchemy import SQLAlchemy
+import csv
 from grab_cur import get_current as grab_current
 from datetime import datetime
-from refresher import bd_refresh
+
 
 app = Flask(__name__)
 ENV = '!dev'
@@ -12,12 +11,10 @@ ENV = '!dev'
 if ENV == 'dev':
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123456@localhost/weather'
 else:
-    app.config[
-        'SQLALCHEMY_DATABASE_URI'] = 'postgresql://hzcbtpyfoybsfv:e5ce01b477a6ea7be5cfbee00c122d9f444e0cd83c2504a7faeac19129084e87@ec2-52-48-159-67.eu-west-1.compute.amazonaws.com:5432/d5sot689t5khc5'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://hzcbtpyfoybsfv:e5ce01b477a6ea7be5cfbee00c122d9f444e0cd83c2504a7faeac19129084e87@ec2-52-48-159-67.eu-west-1.compute.amazonaws.com:5432/d5sot689t5khc5'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-
 
 def create_db():
     sql = str("""
@@ -57,7 +54,6 @@ def select_all():
         """)
     return [i for i in db.engine.execute(sql)]
 
-
 class item():
     id = int
     date = str
@@ -81,13 +77,11 @@ class item():
 # "01-01-2000:[item * 6]"
 grouped_items = {}
 
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
-
     for i in select_all():
         # i: id, date, temperature, weather, humidity
-        date = i[1]  # datetime.strptime(i[1][2:], '%y-%m-%d %H:%M:%S')
+        date = i[1]
         if grouped_items.get(str(date.date()), -1234) == -1234:
             grouped_items.update({str(date.date()): [0] * 6})
         print(str(date), date.hour // 4, grouped_items)
@@ -103,7 +97,7 @@ def index():
     icons = [sort_func(i).weather for i in items]
     headers = [sort_func(i).date.date() for i in items]
     data = grab_current()
-    cur_item = item(-1234, datetime.now(), data['temperature'], data['weather'], data['humidity'],
+    current_weather = item(-1234, datetime.now(), data['temperature'], data['weather'], data['humidity'],
                     weather_text=data['weather_text'])
 
     if request.method == 'GET':
@@ -120,7 +114,7 @@ def index():
                     writer.writerow(j)
             return app.send_static_file("exp.csv")
 
-    return render_template("index.html", items=items, icons=icons, headers=headers, cur_item=cur_item)
+    return render_template("index.html", items=items, icons=icons, headers=headers, current_weather=current_weather)
 
 
 @app.route('/<string:defined_page>')
@@ -134,6 +128,6 @@ def pg2():
 
 
 if __name__ == '__main__':
-    bd_refresh()
+    #bd_refresh()
 
     app.run(debug=True)

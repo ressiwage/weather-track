@@ -1,17 +1,19 @@
 from grab_cur import get_current as grab_current
-import sqlite3, threading, random, datetime
+import datetime
 import os, time, flask
 from flask_sqlalchemy import SQLAlchemy
-from rq import Worker, Queue, Connection
+
+offset = datetime.timedelta(hours=5)
+tz = datetime.timezone(offset, name='ЕКТ')
 
 def bd_refresh():
-    print("iteration")
+    global db
+    print("iteration of refresher")
     data = grab_current()
-    sql = "SELECT * FROM `days`"
     sql = f"""INSERT INTO days (
     temperature, weather, humidity, date
     ) VALUES (
-    {data["temperature"]}, '{data["weather"]}', {data["humidity"]}, '{datetime.datetime.now().replace(microsecond=0)}'
+    {data["temperature"]}, '{data["weather"]}', {data["humidity"]}, '{datetime.datetime.now(tz=tz).replace(microsecond=0)}'
     );"""
     db.engine.execute(sql)
     print(sql)
@@ -28,4 +30,4 @@ if __name__ == '__main__':
     db = SQLAlchemy(app)
     while True:
         bd_refresh()
-        time.sleep(60)
+        time.sleep(60*60)
