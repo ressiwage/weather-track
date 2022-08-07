@@ -84,9 +84,6 @@ grouped_items = {}
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    print(os.path.abspath(__file__))
-
-    clear_db("")
 
     for i in select_all():
         # i: id, date, temperature, weather, humidity
