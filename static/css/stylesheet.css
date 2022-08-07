@@ -6,28 +6,24 @@
 table{
     min-width: 100%;
 }
-table tr:nth-child(1){
-    background-color:rgba(1, 1, 1, 0.025);   
-}
-tr:nth-child(2){
+tr:not(:first-of-type){
     border-top:1px solid rgba(1, 1, 1, 0.1);
 }
 tr:nth-child(2) .row{
     vertical-align: middle;
     align-items: center;
     text-align: center;
-
 }
 tr:nth-child(2) div>p{
-    min-width: 33%;
-    max-width: 33%;
-    word-wrap: break-word;
+    width:33.3%;
 }
-tr:nth-child(2) div>img{
-    max-width: 33%;
+tr td img{
+    margin-left: 5em;
+    max-width: 64px!important;
+    max-height: 64px!important;
 }
-tr td:not(:first-of-type){
-    border-left: 1px solid rgba(1, 1, 1, 0.1);
+tr td:first-of-type{
+    border-right: 1px solid rgba(1, 1, 1, 0.1);
 }
 table tr td{
     text-align: center;
