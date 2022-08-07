@@ -25,6 +25,7 @@ def bd_refresh():
 
 if __name__ == '__main__':
     init()
+    app.run()
     while True:
         bd_refresh()
         time.sleep(60)
