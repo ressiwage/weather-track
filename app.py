@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-import csv
+import csv, os
 from grab_cur import get_current as grab_current
 from datetime import datetime
 
@@ -11,7 +11,7 @@ ENV = '!dev'
 if ENV == 'dev':
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123456@localhost/weather'
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://hzcbtpyfoybsfv:e5ce01b477a6ea7be5cfbee00c122d9f444e0cd83c2504a7faeac19129084e87@ec2-52-48-159-67.eu-west-1.compute.amazonaws.com:5432/d5sot689t5khc5'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
