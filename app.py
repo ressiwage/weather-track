@@ -6,10 +6,10 @@ from datetime import datetime
 
 
 app = Flask(__name__)
-ENV = '!dev'
+ENV = 'dev'
 
 if ENV == 'dev':
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123456@localhost/weather'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///static/sqlite.db'
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL'].replace("postgres","postgresql")
 
@@ -18,7 +18,7 @@ db = SQLAlchemy(app)
 
 def create_db():
     sql = str("""
-        CREATE TABLE days (
+        CREATE TABLE mytable (
         id SERIAL PRIMARY KEY NOT NULL,
         date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         temperature integer NOT NULL,
@@ -31,7 +31,7 @@ def create_db():
 
 def add_to_db_now(temp, weat, humi):
     sql = str(f"""
-        INSERT INTO days(
+        INSERT INTO mytable(
         temperature, 
         weather, 
         humidity,
@@ -43,14 +43,14 @@ def add_to_db_now(temp, weat, humi):
 
 def clear_db(delete_what):
     sql = str(f"""
-        DELETE FROM days {delete_what}
+        DELETE FROM mytable {delete_what}
         """)
     result = db.engine.execute(sql)
 
 
 def select_all():
     sql = str(f"""
-        SELECT * FROM days ORDER BY date DESC
+        SELECT * FROM mytable ORDER BY date DESC
         """)
     return [i for i in db.engine.execute(sql)]
 
@@ -81,11 +81,11 @@ grouped_items = {}
 def index():
     for i in select_all():
         # i: id, date, temperature, weather, humidity
-        date = i[1]
+        date = datetime.strptime(i[1], '%Y-%m-%d %H:%M:%S')
         if grouped_items.get(str(date.date()), -1234) == -1234:
             grouped_items.update({str(date.date()): [0] * 6})
         print(str(date), date.hour // 4, grouped_items)
-        grouped_items[str(date.date())][date.hour // 4] = item(i[0], i[1], i[2], "https://" + i[3][2:], i[4])
+        grouped_items[str(date.date())][date.hour // 4] = item(i[0], date, i[2], "https://" + i[3][2:], i[4])
 
     def sort_func(x):
         for i in x:
@@ -96,7 +96,12 @@ def index():
     items = sorted([j for i, j in grouped_items.items()], key=lambda x: sort_func(x).date.toordinal(), reverse=True)
     icons = [sort_func(i).weather for i in items]
     headers = [sort_func(i).date.date() for i in items]
-    data = grab_current()
+    data = {
+        "weather": "cdn.weatherapi.com/weather/64x64/night/113.png",
+        "temperature": -1234,
+        "humidity": -1234,
+        "weather_text": "пробный период на API кончился, так что дальнейшее отслеживание погоды недоступно"
+            }
     current_weather = item(-1234, datetime.now(), data['temperature'], data['weather'], data['humidity'],
                     weather_text=data['weather_text'])
 
